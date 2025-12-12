@@ -617,8 +617,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const path = req.query.path as string[] | undefined;
-    const route = path?.join('/') || '';
+    // Extrair a rota da URL (remover /api/ do início)
+    const url = req.url || '';
+    const route = url.replace(/^\/api\//, '').split('?')[0];
+
+    console.log('URL:', url, 'Route:', route); // Debug log
 
     // Routing
     if (route === 'auth/login') return handleLogin(req, res);

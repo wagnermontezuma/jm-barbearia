@@ -1,0 +1,37 @@
+{
+  "name": "jm-barbearia",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "tsx watch server/index.ts",
+    "dev:full": "concurrently \"npm run dev:server\" \"npm run dev\"",
+    "server": "tsx server/index.ts",
+    "db:init": "tsx server/database.ts",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "vercel-build": "vite build"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "lucide-react": "^0.560.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "recharts": "^3.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@vercel/node": "^5.1.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "tsx": "^4.21.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6"
+  }
+}

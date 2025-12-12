@@ -55,7 +55,17 @@ export const ClientDashboard: React.FC = () => {
   }, [selectedService, selectedBarber, selectedDate]);
 
   const handleBooking = async () => {
-    if (!selectedService || !selectedBarber || !selectedDate || !selectedTime || !user) return;
+    console.log('Tentando agendar...', { selectedService, selectedBarber, selectedDate, selectedTime, user });
+
+    if (!selectedService || !selectedBarber || !selectedDate || !selectedTime) {
+      console.error('Campos obrigatórios faltando');
+      return;
+    }
+
+    if (!user) {
+      setFeedback({ type: 'error', msg: 'Usuário não autenticado. Faça login novamente.' });
+      return;
+    }
 
     setBookingLoading(true);
     setFeedback(null);
@@ -177,8 +187,8 @@ export const ClientDashboard: React.FC = () => {
                   key={service.id}
                   onClick={() => setSelectedService(service)}
                   className={`cursor-pointer p-4 rounded-lg border transition-all flex items-center gap-4 ${selectedService?.id === service.id
-                      ? 'bg-brand-500/10 border-brand-500 ring-1 ring-brand-500'
-                      : 'bg-brand-800 border-transparent hover:bg-brand-800/80'
+                    ? 'bg-brand-500/10 border-brand-500 ring-1 ring-brand-500'
+                    : 'bg-brand-800 border-transparent hover:bg-brand-800/80'
                     }`}
                 >
                   <img src={service.image} alt={service.name} className="w-16 h-16 rounded-md object-cover" />
@@ -204,8 +214,8 @@ export const ClientDashboard: React.FC = () => {
                       key={barber.id}
                       onClick={() => setSelectedBarber(barber)}
                       className={`cursor-pointer p-4 rounded-lg border transition-all text-center flex flex-col items-center ${selectedBarber?.id === barber.id
-                          ? 'bg-brand-500/10 border-brand-500 ring-1 ring-brand-500'
-                          : 'bg-brand-800 border-transparent hover:bg-brand-800/80'
+                        ? 'bg-brand-500/10 border-brand-500 ring-1 ring-brand-500'
+                        : 'bg-brand-800 border-transparent hover:bg-brand-800/80'
                         }`}
                     >
                       <img src={barber.avatarUrl} alt={barber.name} className="w-20 h-20 rounded-full mb-3 border-2 border-brand-900 object-cover" />
@@ -325,8 +335,8 @@ export const ClientDashboard: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <h4 className="font-bold text-lg text-white">{service?.name || 'Serviço'}</h4>
                         <span className={`text-xs px-2 py-0.5 rounded-full ${app.status === 'confirmed' ? 'bg-green-500/20 text-green-400' :
-                            app.status === 'cancelled' ? 'bg-red-500/20 text-red-400' :
-                              'bg-gray-700 text-gray-300'
+                          app.status === 'cancelled' ? 'bg-red-500/20 text-red-400' :
+                            'bg-gray-700 text-gray-300'
                           }`}>
                           {app.status === 'confirmed' ? 'Confirmado' : app.status === 'cancelled' ? 'Cancelado' : 'Concluído'}
                         </span>

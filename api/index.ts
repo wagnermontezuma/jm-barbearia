@@ -115,7 +115,7 @@ const handleServiceDelete: ApiHandler = async (req, res) => {
     return;
   }
 
-  const id = req.query.path?.[1];
+  const id = req.url?.replace(/^\/api\//, '').split('?')[0].split('/')[1];
   await sql`DELETE FROM services WHERE id = ${id as string}`;
   res.json({ success: true });
 };
@@ -158,7 +158,7 @@ const handleBarberDelete: ApiHandler = async (req, res) => {
     return;
   }
 
-  const id = req.query.path?.[1];
+  const id = req.url?.replace(/^\/api\//, '').split('?')[0].split('/')[1];
   await sql`DELETE FROM barbers WHERE id = ${id as string}`;
   res.json({ success: true });
 };
@@ -276,7 +276,7 @@ const handleAppointmentStatus: ApiHandler = async (req, res) => {
     return;
   }
 
-  const id = req.query.path?.[1];
+  const id = req.url?.replace(/^\/api\//, '').split('?')[0].split('/')[1];
   const { status, paymentMethod } = req.body;
 
   if (paymentMethod) {
@@ -333,7 +333,7 @@ const handleProductDelete: ApiHandler = async (req, res) => {
     return;
   }
 
-  const id = req.query.path?.[1];
+  const id = req.url?.replace(/^\/api\//, '').split('?')[0].split('/')[1];
   await sql`DELETE FROM products WHERE id = ${id as string}`;
   res.json({ success: true });
 };
@@ -434,7 +434,7 @@ const handleExpenseDelete: ApiHandler = async (req, res) => {
     return;
   }
 
-  const id = req.query.path?.[1];
+  const id = req.url?.replace(/^\/api\//, '').split('?')[0].split('/')[1];
   await sql`DELETE FROM expenses WHERE id = ${id as string}`;
   res.json({ success: true });
 };
@@ -600,6 +600,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // Desabilitar cache para evitar 304 em dados dinâmicos
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();

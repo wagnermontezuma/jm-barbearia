@@ -109,19 +109,7 @@ POST https://seu-projeto.vercel.app/api/db/init
 ```
 jm-barbearia/
 ├── api/                    # Vercel Serverless Functions
-│   ├── lib/
-│   │   └── database.ts     # Conexão com Neon PostgreSQL
-│   ├── auth/
-│   │   ├── login.ts
-│   │   └── register.ts
-│   ├── appointments/
-│   ├── barbers/
-│   ├── services/
-│   ├── products/
-│   ├── expenses/
-│   ├── users.ts
-│   ├── health.ts
-│   └── product-sales.ts
+│   └── index.ts            # API Handler único (roteamento)
 ├── components/             # Componentes React
 ├── context/                # Context API (Auth)
 ├── pages/                  # Páginas da aplicação

@@ -216,8 +216,13 @@ export const AdminDashboard: React.FC = () => {
   // --- APPOINTMENT ACTIONS ---
   const handleUpdateStatus = async (id: string, status: 'cancelled') => {
     if (confirm(`Deseja cancelar este agendamento?`)) {
-      await db.updateAppointmentStatus(id, status);
-      refreshData();
+      try {
+        await db.updateAppointmentStatus(id, status);
+        refreshData();
+        alert('Status atualizado com sucesso!');
+      } catch (error: any) {
+        alert('Erro ao atualizar status: ' + (error.message || 'Erro desconhecido'));
+      }
     }
   };
 
@@ -228,9 +233,14 @@ export const AdminDashboard: React.FC = () => {
 
   const confirmCompletion = async () => {
     if (completionModal.appId) {
-      await db.updateAppointmentStatus(completionModal.appId, 'completed', selectedPaymentMethod);
-      setCompletionModal({ isOpen: false, appId: null });
-      refreshData();
+      try {
+        await db.updateAppointmentStatus(completionModal.appId, 'completed', selectedPaymentMethod);
+        setCompletionModal({ isOpen: false, appId: null });
+        refreshData();
+        alert('Atendimento concluído com sucesso!');
+      } catch (error: any) {
+        alert('Erro ao concluir atendimento: ' + (error.message || 'Erro desconhecido'));
+      }
     }
   };
 
@@ -611,8 +621,8 @@ export const AdminDashboard: React.FC = () => {
 
                   return (
                     <div key={app.id} className={`p-3 rounded border-l-4 flex flex-col gap-2 ${isCancelled ? 'bg-red-900/10 border-red-500 opacity-70' :
-                        isCompleted ? 'bg-green-900/10 border-green-500' :
-                          'bg-brand-900 border-brand-500'
+                      isCompleted ? 'bg-green-900/10 border-green-500' :
+                        'bg-brand-900 border-brand-500'
                       }`}>
                       <div className="flex justify-between items-start">
                         <div>
@@ -1025,8 +1035,8 @@ export const AdminDashboard: React.FC = () => {
                   key={method.id}
                   onClick={() => setSelectedPaymentMethod(method.id as any)}
                   className={`w-full p-3 rounded flex items-center gap-3 border transition-colors ${selectedPaymentMethod === method.id
-                      ? 'bg-brand-500 text-brand-900 border-brand-500 font-bold'
-                      : 'bg-brand-900 border-gray-700 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-brand-500 text-brand-900 border-brand-500 font-bold'
+                    : 'bg-brand-900 border-gray-700 text-gray-300 hover:bg-gray-700'
                     }`}
                 >
                   {method.icon}
@@ -1175,8 +1185,8 @@ export const AdminDashboard: React.FC = () => {
                           type="button"
                           onClick={() => setNewApptTime(slot)}
                           className={`text-sm py-1 px-2 rounded border ${newApptTime === slot
-                              ? 'bg-brand-500 text-brand-900 border-brand-500 font-bold'
-                              : 'border-gray-600 text-gray-300 hover:bg-gray-700'
+                            ? 'bg-brand-500 text-brand-900 border-brand-500 font-bold'
+                            : 'border-gray-600 text-gray-300 hover:bg-gray-700'
                             }`}
                         >
                           {slot}

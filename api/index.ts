@@ -1,15 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { neon, neonConfig, NeonQueryFunction } from '@neondatabase/serverless';
+import { neon, neonConfig } from '@neondatabase/serverless';
 
 // Configurar o Neon para conexões serverless
 neonConfig.fetchConnectionCache = true;
 
 const DATABASE_URL = process.env.DATABASE_URL;
 
-// Criar conexão SQL apenas se DATABASE_URL existir
-// Usamos "as any" para evitar erros de tipo quando sql pode ser null
-// A verificação de null é feita no handler antes de qualquer operação
-const sql: NeonQueryFunction<false, false> | null = DATABASE_URL ? neon(DATABASE_URL) : null;
+// Criar conexão SQL - usamos non-null assertion porque verificamos no handler
+// Se DATABASE_URL não existir, o handler retorna erro antes de usar sql
+const sql = DATABASE_URL ? neon(DATABASE_URL) : null!;
 
 // Helper para gerar IDs
 const generateId = () => Math.random().toString(36).substr(2, 9);
